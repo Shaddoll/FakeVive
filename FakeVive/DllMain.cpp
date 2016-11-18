@@ -54,8 +54,6 @@ namespace
 	uint32_t My_GetStringTrackedDeviceProperty(vr::IVRSystem* system, vr::TrackedDeviceIndex_t unDeviceIndex, vr::ETrackedDeviceProperty prop, char *pchValue, uint32_t unBufferSize, vr::ETrackedPropertyError *pError)
 	{
 		auto size = Actual_GetStringTrackedDeviceProperty(system, unDeviceIndex, prop, pchValue, unBufferSize, pError);
-		if (size <= 0)
-			return size;
 
 		const char* overrideStr;
 		switch (prop)
@@ -71,6 +69,7 @@ namespace
 		}
 		size = static_cast<uint32_t>(strlen(overrideStr)) + 1;
 		strncpy_s(pchValue, unBufferSize, overrideStr, size - 1);
+		*pError = vr::TrackedProp_Success;
 		return size;
 	}
 
