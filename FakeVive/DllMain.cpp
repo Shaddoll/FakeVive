@@ -74,7 +74,10 @@ namespace
 		Log->set_level(DebugModeEnabled ? spdlog::level::debug : spdlog::level::info);
 		Log->flush_on(spdlog::level::debug); // needed or else the log will never flush
 
-		Log->info("{} loaded", Title);
+		char processFileName[32767] = { 0 };
+		GetModuleFileName(nullptr, processFileName, sizeof(processFileName));
+		Log->info("{} loaded into {}", Title, processFileName);
+		Log->info("Command line: {}", GetCommandLine());
 	}
 
 	void InitializeDDrawProxy()
